@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GZipTest
 {
@@ -6,7 +7,15 @@ namespace GZipTest
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var errors = Validator.Validate(args);
+            if (errors.Any())
+            {
+                foreach (var error in errors)
+                    Console.WriteLine(error);
+                return;
+            }
+
+
         }
     }
 }
