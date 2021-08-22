@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace GZipTest
 {
     /// <summary>
     /// Сlass for validating the input string.
     /// </summary>
-    static class Validator 
+    static class Validator
     {
         private static string _сompress = "compress";
         private static string _decompress = "decompress";
 
         private static List<string> errors = new List<string>();
 
-        public static List<string> Validate(string[] input) // TODO Add validate "Wrong gzip header."
+        public static List<string> Validate(string[] input)
         {
             if (input.Length != 3)
             {

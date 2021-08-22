@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 
 namespace GZipTest
@@ -20,46 +17,75 @@ namespace GZipTest
             _dataProvider = dataProvider;
         }
 
-        public async void ReadAsync() => await Task.Run(() => Read()); //Todo Remove
-
         public void Read()
+        {
+            if (_dataProvider.CompressionMode == "compress")
+            {
+                ReadFile();
+            }
+            else
+            {
+                ReadCompressedFile();
+            }
+
+            _dataProvider.IsReaderComplete = true;
+        }
+
+        private void ReadFile()
         {
             using (var fstream = new FileStream(_dataProvider.SourceFile, FileMode.Open, FileAccess.Read, FileShare.None))
             {
-                byte[] buffer = new byte[1024 * 1024]; //1mb
+                byte[] buffer = new byte[_dataProvider.BlockLength];
                 long index = 0;
                 int readedBytes;
-                while ((readedBytes = fstream.Read(buffer, 0, buffer.Length)) > 0) // add try catch
+                while ((readedBytes = fstream.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    if (_dataProvider.SourceQueue.Count() <= 1024) //TODO check memory and gc collect + refactoring if-else
-                    {
-                        if (readedBytes == buffer.Length)
-                        {
-                            _dataProvider.SourceQueue.Enqueue(new DataBlock(index, buffer.ToArray()));
-                        }
-                        else
-                        {
-                            _dataProvider.SourceQueue.Enqueue(new DataBlock(index, buffer.Take(readedBytes).ToArray()));
-                        }
-                    }
-                    else
-                    {
-                        Thread.Sleep(500);
-                        if (readedBytes == buffer.Length)
-                        {
-                            _dataProvider.SourceQueue.Enqueue(new DataBlock(index, buffer.ToArray()));
-                        }
-                        else
-                        {
-                            _dataProvider.SourceQueue.Enqueue(new DataBlock(index, buffer.Take(readedBytes).ToArray()));
-                        }
-                    }
+                    _dataProvider.SourceQueue.Enqueue(new DataBlock(index, buffer.Take(readedBytes).ToArray()));
+
+                    CollectGarbage();
 
                     index++;
                 }
             }
+        }
 
-            _dataProvider.IsReaderComplete = true;
+        private void ReadCompressedFile()
+        {
+            using (var fstream = new FileStream(_dataProvider.SourceFile, FileMode.Open, FileAccess.Read, FileShare.None))
+            {
+                byte[] gZipHeader = new byte[10];
+                long index = 0;
+                byte[] gZipHeaderDefault = new byte[10] { 0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0a };
+
+                while (fstream.Read(gZipHeader, 0, gZipHeaderDefault.Length) > 0)
+                {
+                    if (gZipHeader[0] == gZipHeaderDefault[0] && gZipHeader[1] == gZipHeaderDefault[1] && gZipHeader[2] == gZipHeaderDefault[2])
+                    {
+                        var blockSize = BitConverter.ToInt32(gZipHeader.Skip(3).Take(4).ToArray());
+                        var buffer = new byte[blockSize];
+                        fstream.Read(buffer, 0, blockSize - gZipHeader.Length);
+
+                        _dataProvider.SourceQueue.Enqueue(new DataBlock(index, gZipHeaderDefault.Concat(buffer).ToArray()));
+
+                        CollectGarbage();
+
+                        index++;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(Resources.Messages.IncorrectGzipHeader);
+                    }
+                }
+            }
+        }
+
+        private void CollectGarbage()
+        {
+            if (_dataProvider.SourceQueue.Count() > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (2 * _dataProvider.BlockLength)) //Use half of Available Memory  
+            {
+                Thread.Sleep(500);
+                GC.Collect();
+            }
         }
     }
 }

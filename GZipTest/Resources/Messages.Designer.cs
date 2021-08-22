@@ -86,5 +86,14 @@ namespace GZipTest.Resources {
                 return ResourceManager.GetString("IncorrectFilePath", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Incorrect GZip header! This file is not an archive, or it is damaged..
+        /// </summary>
+        internal static string IncorrectGzipHeader {
+            get {
+                return ResourceManager.GetString("IncorrectGzipHeader", resourceCulture);
+            }
+        }
     }
 }
