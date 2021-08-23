@@ -17,7 +17,7 @@ namespace GZipTest
 
         public void Transform()
         {
-            while (!_dataProvider.IsReaderComplete || _dataProvider.SourceQueue.Count > 0)
+            while (!_dataProvider.IsReaderComplete || !_dataProvider.SourceQueue.IsEmpty)
             {
                 if (_dataProvider.SourceQueue.TryDequeue(out var buffer) && buffer != null)
                 {

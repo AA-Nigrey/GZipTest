@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace GZipTest
 {
+    /// <summary>
+    /// Сlass for multiTask compress-decompress files.
+    /// </summary>
     public class GZipProcessor
     {
         private readonly DataProvider _dataProvider;

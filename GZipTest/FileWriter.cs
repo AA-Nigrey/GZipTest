@@ -19,7 +19,7 @@ namespace GZipTest
             using (var outstream = new FileStream(_dataProvider.DestinationFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
             {
                 var index = 0;
-                while (!_dataProvider.IsGZiperComplete || _dataProvider.ResultQueue.Count > 0)
+                while (!_dataProvider.IsGZiperComplete || !_dataProvider.ResultQueue.IsEmpty)
                 {
                     if (_dataProvider.ResultQueue.TryRemove(index, out byte[] buffer) && buffer != null)
                     {

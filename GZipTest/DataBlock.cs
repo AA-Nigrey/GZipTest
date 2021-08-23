@@ -10,8 +10,8 @@ namespace GZipTest
             Data = data.ToArray();
         }
 
-        public long Index { get; private set; }
+        public long Index { get; }
 
-        public byte[] Data { get; private set; }
+        public byte[] Data { get; }
     }
 }

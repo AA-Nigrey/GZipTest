@@ -59,11 +59,11 @@ namespace GZipTest
 
                 while (fstream.Read(gZipHeader, 0, gZipHeaderDefault.Length) > 0)
                 {
-                    if (gZipHeader[0] == gZipHeaderDefault[0] && gZipHeader[1] == gZipHeaderDefault[1] && gZipHeader[2] == gZipHeaderDefault[2])
+                    if (gZipHeader[0] == gZipHeaderDefault[0] && gZipHeader[1] == gZipHeaderDefault[1] && gZipHeader[2] == gZipHeaderDefault[2]) //check block header
                     {
-                        var blockSize = BitConverter.ToInt32(gZipHeader.Skip(3).Take(4).ToArray());
-                        var buffer = new byte[blockSize];
-                        fstream.Read(buffer, 0, blockSize - gZipHeader.Length);
+                        var blockLength = BitConverter.ToInt32(gZipHeader.Skip(3).Take(4).ToArray()); //read length of compressed data block from header
+                        var buffer = new byte[blockLength];
+                        fstream.Read(buffer, 0, blockLength - gZipHeader.Length);
 
                         _dataProvider.SourceQueue.Enqueue(new DataBlock(index, gZipHeaderDefault.Concat(buffer).ToArray()));
 
@@ -81,7 +81,7 @@ namespace GZipTest
 
         private void CollectGarbage()
         {
-            if (_dataProvider.SourceQueue.Count() > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (2 * _dataProvider.BlockLength)) //Use half of Available Memory  
+            if (_dataProvider.SourceQueue.Count > GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / (2 * _dataProvider.BlockLength)) //Use half of Available Memory  
             {
                 Thread.Sleep(500);
                 GC.Collect();

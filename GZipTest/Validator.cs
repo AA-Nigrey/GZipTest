@@ -6,12 +6,11 @@ namespace GZipTest
     /// <summary>
     /// Сlass for validating the input string.
     /// </summary>
-    static class Validator
+    public static class Validator
     {
-        private static string _сompress = "compress";
-        private static string _decompress = "decompress";
-
-        private static List<string> errors = new List<string>();
+        private static readonly string _сompress = "compress";
+        private static readonly string _decompress = "decompress";
+        private static readonly List<string> errors = new List<string>();
 
         public static List<string> Validate(string[] input)
         {
