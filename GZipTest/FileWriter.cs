@@ -3,7 +3,7 @@
 namespace GZipTest
 {
     /// <summary>
-    /// Сlass for writing source file.
+    /// Сlass for writing result file.
     /// </summary>
     public class FileWriter
     {
