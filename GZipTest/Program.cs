@@ -1,32 +1,34 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GZipTest
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             var errors = Validator.Validate(args);
             if (errors.Any())
             {
                 foreach (var error in errors)
                     Console.WriteLine(error);
-                return;
+                return 1;
             }
+
             DataProvider dataProvider = new DataProvider(args[0], args[1], args[2]);
+            GZipProcessor gZipProcessor = new GZipProcessor(dataProvider);
+            var success = gZipProcessor.Process();
 
-            FileReader fileReader = new FileReader(dataProvider);
-            FileWriter fileWriter = new FileWriter(dataProvider);
-
-            var taskReader = new Task(() => fileReader.Read());
-            taskReader.Start();
-
-            var taskWriter = new Task(() => fileWriter.Write());
-            taskWriter.Start();
-
-
+            if(success)
+            {
+                Console.WriteLine(Resources.Messages.Success);
+                return 0;
+            }
+            else
+            {
+                Console.WriteLine(Resources.Messages.Fail);
+                return 1;
+            }
         }
     }
 }

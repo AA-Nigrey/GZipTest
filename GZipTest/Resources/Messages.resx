@@ -120,6 +120,9 @@
   <data name="EqualFilePaths" xml:space="preserve">
     <value>Source and destination file paths must be different.</value>
   </data>
+  <data name="Fail" xml:space="preserve">
+    <value>The application terminated with errors.</value>
+  </data>
   <data name="IncorrectCommandFormat" xml:space="preserve">
     <value>Incorrect command format! Correct format -&gt; compress/decompress [source file path] [destination file path]</value>
   </data>
@@ -128,5 +131,8 @@
   </data>
   <data name="IncorrectGzipHeader" xml:space="preserve">
     <value>Incorrect GZip header! This file is not an archive, or it is damaged.</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>The application completed successfully.</value>
   </data>
 </root>

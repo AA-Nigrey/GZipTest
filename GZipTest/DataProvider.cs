@@ -13,11 +13,11 @@ namespace GZipTest
 
         public int BlockLength { get; } = 1024 * 1024; //1 Mb
 
-        public string SourceFile { get; private set; }
+        public string SourceFile { get; }
 
-        public string DestinationFile { get; private set; }
+        public string DestinationFile { get; }
 
-        public string CompressionMode { get; private set; }
+        public string CompressionMode { get; }
 
         public ConcurrentQueue<DataBlock> SourceQueue { get; set; } = new ConcurrentQueue<DataBlock>();
 
@@ -25,6 +25,6 @@ namespace GZipTest
 
         public bool IsReaderComplete { get; set; }
 
-        public bool IsCompressorComplete { get; set; }
+        public bool IsGZiperComplete { get; set; }
     }
 }

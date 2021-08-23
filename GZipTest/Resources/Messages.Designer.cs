@@ -70,6 +70,15 @@ namespace GZipTest.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The application terminated with errors..
+        /// </summary>
+        internal static string Fail {
+            get {
+                return ResourceManager.GetString("Fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Incorrect command format! Correct format -&gt; compress/decompress [source file path] [destination file path].
         /// </summary>
         internal static string IncorrectCommandFormat {
@@ -93,6 +102,15 @@ namespace GZipTest.Resources {
         internal static string IncorrectGzipHeader {
             get {
                 return ResourceManager.GetString("IncorrectGzipHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The application completed successfully..
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
     }

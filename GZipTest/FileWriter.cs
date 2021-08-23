@@ -2,6 +2,9 @@
 
 namespace GZipTest
 {
+    /// <summary>
+    /// Сlass for writing source file.
+    /// </summary>
     public class FileWriter
     {
         private readonly DataProvider _dataProvider;
@@ -16,7 +19,7 @@ namespace GZipTest
             using (var outstream = new FileStream(_dataProvider.DestinationFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
             {
                 var index = 0;
-                while (!_dataProvider.IsCompressorComplete || _dataProvider.ResultQueue.Count > 0)
+                while (!_dataProvider.IsGZiperComplete || _dataProvider.ResultQueue.Count > 0)
                 {
                     if (_dataProvider.ResultQueue.TryRemove(index, out byte[] buffer) && buffer != null)
                     {
