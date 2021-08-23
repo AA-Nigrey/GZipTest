@@ -14,6 +14,7 @@ namespace GZipTest
                     Console.WriteLine(error);
                 return 1;
             }
+            Console.WriteLine(Resources.Messages.Process);
 
             DataProvider dataProvider = new DataProvider(args[0], args[1], args[2]);
             GZipProcessor gZipProcessor = new GZipProcessor(dataProvider);

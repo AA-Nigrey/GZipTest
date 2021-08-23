@@ -106,6 +106,15 @@ namespace GZipTest.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Processing....
+        /// </summary>
+        internal static string Process {
+            get {
+                return ResourceManager.GetString("Process", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на The application completed successfully..
         /// </summary>
         internal static string Success {

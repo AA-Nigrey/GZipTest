@@ -132,6 +132,9 @@
   <data name="IncorrectGzipHeader" xml:space="preserve">
     <value>Incorrect GZip header! This file is not an archive, or it is damaged.</value>
   </data>
+  <data name="Process" xml:space="preserve">
+    <value>Processing...</value>
+  </data>
   <data name="Success" xml:space="preserve">
     <value>The application completed successfully.</value>
   </data>
